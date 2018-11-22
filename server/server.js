@@ -13,6 +13,15 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
     console.log('New User connected');
+
+    // escute evento createMessage e broadcast newMessage 
+    socket.on('createMessage', (message) => {
+        io.emit('newMessage', { 
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
+    })
     
     socket.on('disconnect', () => {
         console.log('User was disconnected');
